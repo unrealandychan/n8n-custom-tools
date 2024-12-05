@@ -5,4 +5,4 @@ Please refer to the [n8n documentation](https://docs.n8n.io/integrations/builtin
 
 And Read the Pyodide for more details:
 - [Pyodide](https://pyodide.org/en/stable/usage/packages-in-pyodide.html#packages-in-pyodide)
-- 
+
