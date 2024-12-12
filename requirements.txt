@@ -8,3 +8,5 @@ pydantic==2.10.2
 httpx>=0.28.0
 loguru==0.7.2
 duckduckgo-search
+python-dotenv~=1.0.1
+langchain-community~=0.3.9

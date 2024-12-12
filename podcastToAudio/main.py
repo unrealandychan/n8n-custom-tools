@@ -1,14 +1,9 @@
-import os
-
 import requests
-
-"""
-This script is a simple example of how to use the Azure Text to Speech API
-It requires a subscription key from Azure, which can be obtained from the Azure Portal
-Without 3rd party libraries, it uses the requests library to make the API calls.
-"""
-
-## TODO: Add more voice choices and languages
+from dotenv import load_dotenv
+import json
+import os
+from datetime import datetime
+load_dotenv()
 
 def get_token(subscription_key):
     try:
@@ -22,6 +17,23 @@ def get_token(subscription_key):
     except Exception as e:
         print(f"Error getting token: {e}")
         return None
+
+def getPodcast():
+    url = os.getenv("API_URL")
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return None
+
+def parsePodcast():
+    podcast = getPodcast()
+    if podcast is not None:
+        podcast = podcast["podcast"][0]["script"]
+        podcastJson = json.loads(podcast)
+        return podcastJson
+    else:
+        print("[!] Request Failed")
 
 def azure_tts(text, key):
     """
@@ -55,12 +67,15 @@ def save_audio(response, filename):
     except Exception as e:
         print(f"Error saving audio: {e}")
 
-# def main():
-#     subscription_key = os.environ.get('AZURE_TTS_KEY')
-#     text = 'Hello, this is a test of the Azure Text to Speech API'
-#     token = get_token(subscription_key)
-#     response = azure_tts(text, token)
-#     save_audio(response, 'output.wav')
-#
-# if __name__ == '__main__':
-#     main()
+def main():
+    subscription_key = os.environ.get('AZURE_TTS_KEY')
+    podcasts = parsePodcast()
+    token = get_token(subscription_key)
+    date = datetime.now().strftime("%Y-%m-%d")
+    for podcast in podcasts:
+        i = podcast["section_id"]
+        text = podcast["script"]
+        response = azure_tts(text, token)
+        save_audio(response, "output" + str(i) + date + ".wav")
+
+main()
