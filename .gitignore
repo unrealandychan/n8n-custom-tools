@@ -130,6 +130,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.wav
+.mp3
 
 # Spyder project settings
 .spyderproject
@@ -162,3 +164,5 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
+.wav
+.mp3
